@@ -13,7 +13,7 @@ I've divided my project to separated parts:<br>
 Theese parts may be done within separated branches or as realease versions.<br><br>
 
 **Status:**<br>
-Part 1: 20% completed - release 1.\*.\*<br>
+Part 1: 25% completed - release 1.\*.\*<br>
 Part 2: 0% completed - release 2.\*.\*<br>
 Part 3: 0% completed - release 3.\*.\*<br>
 
