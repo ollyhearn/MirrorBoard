@@ -16,3 +16,6 @@ Theese parts may be done within separated branches or as realease versions.<br><
 Part 1: 20% completed - release 1.\*.\*<br>
 Part 2: 0% completed - release 2.\*.\*<br>
 Part 3: 0% completed - release 3.\*.\*<br>
+
+**What about releases?**<br>
+Now I'm working on my linux PC, so **Pre-releases** are for linux only. Normal releases I'll compile on windows, so they will be working on your Pc.
