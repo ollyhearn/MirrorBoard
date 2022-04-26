@@ -11,8 +11,8 @@ I've divided my project to separated parts:<br>
 3. Program that is basicly a Miro, but works with direct TCP/IP connection.<br>
 <br>
 Theese parts may be done within separated branches or as realease versions.<br>
-<br>
-**Status:**<br>
+<br> 
+**Status:** <br>
 Part 1: 20% completed - release 1.\*.\*<br>
 Part 2: 0% completed - release 2.\*.\*<br>
 Part 3: 0% completed - release 3.\*.\*<br>
