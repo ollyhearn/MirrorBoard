@@ -10,7 +10,7 @@ I've divided my project to separated parts:<br>
 2. Program that could send and receive data about written text in real-time;<br>
 3. Program that is basicly a Miro, but works with direct TCP/IP connection.<br>
 <br>
-Theese parts may be done within separated branches or as realease versions.<br>
+Theese parts may be done within separated branches or as realease versions.<br><br>
 
 **Status:**<br>
 Part 1: 20% completed - release 1.\*.\*<br>
