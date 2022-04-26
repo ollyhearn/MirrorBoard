@@ -1,6 +1,8 @@
 #ifndef MAINWINDOW_H
 #define MAINWINDOW_H
 
+#include "serverlogic.h"
+
 #include <QMainWindow>
 #include <QtNetwork/QTcpSocket>
 
@@ -27,10 +29,8 @@ private slots:
 
     void checkRadio();
 
-    QString getIp();
-
 private:
     Ui::MainWindow *ui;
-    QTcpSocket *ip = new QTcpSocket();
+    ServerLogic sl;
 };
 #endif // MAINWINDOW_H

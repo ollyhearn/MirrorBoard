@@ -19,8 +19,8 @@ MainWindow::MainWindow(QWidget *parent)
 
     ui->setupUi(this);
     setWindowTitle("Text Over Network!");
-//    this->ip = new QTcpSocket();
-    //this->ip->connectToHost("8.8.8.8", 53);
+    ServerLogic *sl = new ServerLogic();
+    sl->connect();
 }
 
 MainWindow::~MainWindow()
@@ -29,14 +29,14 @@ MainWindow::~MainWindow()
 
 }
 
-QString MainWindow::getIp(){
-    if (this->ip->waitForConnected(30)) {
-        QString adress = 0;//this->ip->QTcpSocket::localAddress().toString();
-        return "Your IP adress: " + adress;
-    } else {
-        return "Error retreiving IP adress";
-    }
-}
+//QString MainWindow::getIp(){
+//    if (this->ip->waitForConnected(30)) {
+//        QString adress = 0;//this->ip->QTcpSocket::localAddress().toString();
+//        return "Your IP adress: " + adress;
+//    } else {
+//        return "Error retreiving IP adress";
+//    }
+//}
 
 void MainWindow::on_clearButton_clicked()
 {
@@ -70,7 +70,7 @@ void MainWindow::checkRadio(){
     else if (ui->serverRadio->isChecked()){
         ui->ipText->setEnabled(false);
         ui->ipText->clear();
-        ui->ipText->setPlaceholderText(getIp());
+        ui->ipText->setPlaceholderText(sl.getIp());
         ui->textEdit->setEnabled(false);
         ui->textEdit->setPlaceholderText("You will receive message here!");
         //QTcpSocket socket;

@@ -8,14 +8,19 @@
 class ServerLogic : public QObject
 {
     Q_OBJECT
+
+
 public:
     explicit ServerLogic(QObject *parent = nullptr);
-
-    void getIp();
     bool connect();
+    QString getIp();
+
+
 signals:
 
 public slots:
+
+private:
     QTcpSocket *ssocket;
 
 };
