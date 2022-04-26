@@ -10,7 +10,8 @@
 #include <QTcpServer>
 #include <QtNetwork/QHostAddress>
 #include <QString>
-
+#include <QMessageBox>
+#include <QInputDialog>
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
@@ -22,6 +23,8 @@ MainWindow::MainWindow(QWidget *parent)
     ServerLogic *sl = new ServerLogic();
     sl->connect();
 }
+
+//На проект затрачено: 4 ч.
 
 MainWindow::~MainWindow()
 {
@@ -87,5 +90,36 @@ void MainWindow::checkRadio(){
 void MainWindow::on_submitButton_clicked()
 {
 
+}
+
+
+
+
+
+void MainWindow::on_actionAbout_triggered()
+{
+    QMessageBox about;
+    about.setTextFormat(Qt::RichText);
+    about.setWindowTitle("About ToN");
+    about.setText("Simple app to send and receive text over TCP/IP connection!<br><br>by ákd.<br><a href='https://github.com/ollyhearn/'>My GitHub!</a><br><br>v0.0.3");
+    about.exec();
+}
+
+
+void MainWindow::on_actionSet_port_triggered()
+{
+    //srand (time(NULL));
+    QString curport = QString::number(sl.getPort());
+    while(!sl.SetPort(QInputDialog::getText(this, "Set port", "You can pick any port you wish, uless it is a reserved port", QLineEdit::Normal, curport).toLong())){
+        QMessageBox::warning(this, "Scary warning!", "You set the wrong port, use ports only in [1:65535]");
+    }
+    QMessageBox::information(this, "Congratulations!", "Port set succsess!");
+
+//    if(sl.SetPort(QInputDialog::getText(this, "Set port", "You can pick any port you wish, uless it is a reserved port", QLineEdit::Normal, curport).toLong())){
+//        QMessageBox::information(this, "Congratulations!", "Port set succsess!");
+//    }
+//    else{
+//        QMessageBox::warning(this, "Scary warning!", "You set the wrong port, use ports only in [1:65535]");
+//    }
 }
 

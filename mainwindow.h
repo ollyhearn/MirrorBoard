@@ -29,6 +29,10 @@ private slots:
 
     void checkRadio();
 
+    void on_actionAbout_triggered();
+
+    void on_actionSet_port_triggered();
+
 private:
     Ui::MainWindow *ui;
     ServerLogic sl;

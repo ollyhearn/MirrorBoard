@@ -16,12 +16,18 @@ public:
     QString getIp();
 
 
+    bool SetPort(long p);
+
+
+    long getPort();
 signals:
 
 public slots:
 
 private:
     QTcpSocket *ssocket;
+    QTcpServer *server;
+    long port;
 
 };
 
