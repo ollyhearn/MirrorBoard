@@ -17,8 +17,6 @@ public:
 
 
     bool SetPort(long p);
-
-
     long getPort();
 signals:
 
