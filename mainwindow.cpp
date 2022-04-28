@@ -26,7 +26,7 @@ MainWindow::MainWindow(QWidget *parent)
 
 }
 
-//На проект затрачено: 4 ч.
+//На проект затрачено: 5 ч.
 
 MainWindow::~MainWindow()
 {
@@ -55,7 +55,7 @@ void MainWindow::on_serverRadio_clicked()
 
 void MainWindow::checkRadio(){
     if (ui->clientRadio->isChecked()){
-        ui->ipText->setPlaceholderText("Enter server IP here..");
+        ui->ipText->setPlaceholderText("Enter server IP:Port here..");
         ui->ipText->setEnabled(true);
         ui->textEdit->clear();
         ui->textEdit->setEnabled(true);
@@ -66,7 +66,7 @@ void MainWindow::checkRadio(){
     else if (ui->serverRadio->isChecked()){
         ui->ipText->setEnabled(false);
         ui->ipText->clear();
-        ui->ipText->setPlaceholderText(sl.getIp());
+        ui->ipText->setPlaceholderText("IP:Port: " + sl.getIp() + ":" + QString::number(sl.getPort()));
         ui->textEdit->setEnabled(false);
         ui->textEdit->setPlaceholderText("You will receive message here!");
 

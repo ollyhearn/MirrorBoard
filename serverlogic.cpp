@@ -1,11 +1,18 @@
 #include "serverlogic.h"
 
-ServerLogic::ServerLogic(QObject *parent)
-    : QObject{parent}
+ServerLogic::ServerLogic()
 {
     ssocket = new QTcpSocket(this);
     server = new QTcpServer(this);
     port = 57483;
+
+
+}
+
+void ServerLogic::startServer(){
+    if(this->listen(QHostAddress::Any, port)){
+
+    }
 }
 
 bool ServerLogic::connect(){
@@ -14,19 +21,21 @@ bool ServerLogic::connect(){
         return true;
     }
     else return false;
+
+
 }
 
 QString ServerLogic::getIp(){
     if (connect()){
-        return "IP: " + ssocket->localAddress().toString();
-        return "IP: " + server->serverAddress().toString();
+        return ssocket->localAddress().toString();
+        return server->serverAddress().toString();
         //ssocket->
     }
     else return "Failed to connect!";
 }
 
 bool ServerLogic::SetPort(long p){
-    if(p > 0 && p < 65535){
+    if(p > 0 && p < 65536){
         port = p;
         return true;
     }
