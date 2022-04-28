@@ -2,8 +2,10 @@
 #define MAINWINDOW_H
 
 #include "serverlogic.h"
+#include "clientlogic.h"
 
 #include <QMainWindow>
+#include <clientlogic.h>
 #include <QtNetwork/QTcpSocket>
 
 QT_BEGIN_NAMESPACE
@@ -33,8 +35,15 @@ private slots:
 
     void on_actionSet_port_triggered();
 
+    void on_connectButton_clicked();
+
+    void on_copyButton_clicked();
+
 private:
     Ui::MainWindow *ui;
     ServerLogic sl;
+    ClientLogic cl;
+    QClipboard *Clipboard;
+    int copyCount = 1;
 };
 #endif // MAINWINDOW_H

@@ -1,4 +1,5 @@
 #include "mainwindow.h"
+#include "qclipboard.h"
 #include "ui_mainwindow.h"
 #include "clientlogic.h"
 #include "serverlogic.h"
@@ -6,12 +7,16 @@
 #include <QTextEdit>
 #include <QPushButton>
 #include <QRadioButton>
-#include <QTcpSocket>
-#include <QTcpServer>
-#include <QtNetwork/QHostAddress>
-#include <QString>
 #include <QMessageBox>
 #include <QInputDialog>
+#include <QStatusBar>
+
+#include <QTcpSocket>
+#include <QTcpServer>
+//#include <QtNetwork/QHostAddress>
+#include <QString>
+//#include <QClipboard>
+
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
@@ -21,12 +26,17 @@ MainWindow::MainWindow(QWidget *parent)
     ui->setupUi(this);
     setWindowTitle("Text Over Network!");
     setWindowIcon(QIcon(":/res/icons/m512.png"));
+    ui->ipText->setPlaceholderText("Enter server IP:Port here..");
+    ui->statusbar->setStyleSheet("color: #9e2601");
+    ui->statusbar->showMessage("Not connected!");
+    ui->copyButton->setEnabled(false);
     ServerLogic *sl = new ServerLogic();
-    sl->connect();
+    ClientLogic *cl = new ClientLogic();
+    sl->sconnect();
 
 }
 
-//На проект затрачено: 5 ч.
+//На проект затрачено: 6.5 ч.
 
 MainWindow::~MainWindow()
 {
@@ -57,6 +67,12 @@ void MainWindow::checkRadio(){
     if (ui->clientRadio->isChecked()){
         ui->ipText->setPlaceholderText("Enter server IP:Port here..");
         ui->ipText->setEnabled(true);
+        ui->ipText->clear();
+        ui->connectButton->setEnabled(true);
+        ui->submitButton->setEnabled(true);
+        ui->copyButton->setEnabled(false);
+        ui->copyButton->setText("Copy");
+        copyCount = 1;
         ui->textEdit->clear();
         ui->textEdit->setEnabled(true);
         ui->textEdit->setPlaceholderText("Send text to server! Type something and click \"Submit!\"");
@@ -65,8 +81,14 @@ void MainWindow::checkRadio(){
     }
     else if (ui->serverRadio->isChecked()){
         ui->ipText->setEnabled(false);
+        ui->connectButton->setEnabled(false);
+        ui->submitButton->setEnabled(false);
         ui->ipText->clear();
-        ui->ipText->setPlaceholderText("IP:Port: " + sl.getIp() + ":" + QString::number(sl.getPort()));
+        ui->copyButton->setText("Copy");
+        ui->copyButton->setEnabled(true);
+        copyCount = 1;
+
+        ui->ipText->setText(sl.getIp() + ":" + QString::number(sl.getPort()));
         ui->textEdit->setEnabled(false);
         ui->textEdit->setPlaceholderText("You will receive message here!");
 
@@ -93,7 +115,7 @@ void MainWindow::on_actionAbout_triggered()
     QMessageBox about;
     about.setTextFormat(Qt::RichText);
     about.setWindowTitle("About ToN");
-    about.setText("Simple app to send and receive text over TCP/IP connection!<br><br>by ákd.<br><a href='https://github.com/ollyhearn/'>My GitHub!</a><br><br>v0.0.5");
+    about.setText("Simple app to send and receive text over TCP/IP connection!<br><br>by ákd.<br><a href='https://github.com/ollyhearn/'>My GitHub!</a><br><br>v0.0.6");
     about.exec();
 }
 
@@ -104,6 +126,27 @@ void MainWindow::on_actionSet_port_triggered()
     while(!sl.SetPort(QInputDialog::getText(this, "Set port", "You can pick any port you wish, uless it is a reserved port", QLineEdit::Normal, curport).toLong())){
         QMessageBox::warning(this, "Scary warning!", "You set the wrong port, use ports only in [1:65535]");
     }
+    checkRadio();
     QMessageBox::information(this, "Congratulations!", "Port set succsess!");
+}
+
+
+void MainWindow::on_connectButton_clicked()
+{
+
+}
+
+
+void MainWindow::on_copyButton_clicked()
+{
+    Clipboard->setText(ui->ipText->toPlainText());
+    if(copyCount == 1){
+        ui->copyButton->setText("Copied!");
+        copyCount++;
+    }
+    else{
+        ui->copyButton->setText("Copied x" + QString::number(copyCount) + "!");
+        copyCount++;
+    }
 }
 

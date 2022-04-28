@@ -5,6 +5,9 @@
 #include <QTcpServer>
 #include <QTcpSocket>
 
+#include <QDataStream>
+#include <QDebug>
+
 class ServerLogic : public QTcpServer
 {
     Q_OBJECT
@@ -13,25 +16,28 @@ class ServerLogic : public QTcpServer
 public:
     //explicit ServerLogic(QObject *parent = nullptr);
     ServerLogic();
-    bool connect();
+    bool sconnect();
     QString getIp();
 
 
     bool SetPort(long p);
     long getPort();
     void startServer();
+    void sendToClient(QString got);
 signals:
-
-public slots:
-    //void incomingConnection(qintptr socketDescriptor);
-    //void slotReadyRead();
 
 private:
     QTcpSocket *ssocket;
+    QTcpSocket *rsocket;
     QTcpServer *server;
     long port;
 
     QByteArray data;
+
+public slots:
+    void incomingConnection(qintptr socketDescriptor);
+    void slotReadyRead();
+
 
 };
 
