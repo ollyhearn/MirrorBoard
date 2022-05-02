@@ -3,14 +3,18 @@
 
 #include <QObject>
 #include <QTcpSocket>
+#include <QString>
+#include <QDebug>
 
-class ClientLogic : public QObject
+class ClientLogic : public QTcpSocket
 {
     Q_OBJECT
 public:
-    explicit ClientLogic(QObject *parent = nullptr);
+    ClientLogic();
 
     bool clientConnect(QString ip);
+
+    void SendToServer(QString str);
 private:
     QTcpSocket *csocket;
     QByteArray data;

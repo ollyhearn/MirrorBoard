@@ -1,19 +1,51 @@
 #include "clientlogic.h"
 #include "serverlogic.h"
 
-ClientLogic::ClientLogic(QObject *parent)
-    : QObject{parent}
+
+ClientLogic::ClientLogic()
 {
-    //connect(csocket, &QTcpSocket::readyRead, this, &ClientLogic::slotReadyRead);
-    //connect(csocket, &QTcpSocket::disconnected, csocket, &QTcpSocket::deleteLater);
+    csocket = new QTcpSocket(this);
+    connect(csocket, &QTcpSocket::readyRead, this, &ClientLogic::slotReadyRead);
+    connect(csocket, &QTcpSocket::disconnected, csocket, &QTcpSocket::deleteLater);
 }
 
 void ClientLogic::slotReadyRead()
 {
+    QDataStream in(csocket);
+    in.setVersion(QDataStream::Qt_DefaultCompiledVersion);
+    if(in.status() == QDataStream::Ok){
 
+    }
+}
+
+void ClientLogic::SendToServer(QString str){
+    data.clear();
+    QDataStream out(&data, QIODevice::WriteOnly);
+    out.setVersion(QDataStream::Qt_DefaultCompiledVersion);
+    out << str;
+    csocket->write(data);
 }
 
 bool ClientLogic::clientConnect(QString ip){
-    QStringList i = ip.split(":");
-    return true;
+    if(ip != 0){
+        QStringList i = ip.split(":");
+        qDebug() << "Got " << i[0] << ":" << i[1];
+        try{
+            csocket->connectToHost(i[0], i[1].toLong());
+            qDebug() << "Connected to host";
+            if(csocket->waitForConnected(5000)){
+                return true;
+            }
+            else{
+                return false;
+            }
+        }
+        catch(std::exception e){
+            qDebug() << "Something went wrong!";
+            return false;
+        }
+    }
+    else{
+        return false;
+    }
 }

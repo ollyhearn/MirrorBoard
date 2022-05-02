@@ -4,7 +4,7 @@
 **What I'm gonna do?**<br>
 Basicly, my course work is dedicated to the network logic and other stuff like this. I've chosen QT6 as my main code platform, which will allow me to create graphical and network things. The result of this course work is a working program, that will allow you to use networking features.<br>
 
-**Parts of my projet**<br>
+**Parts of my projcet**<br>
 I've divided my project to separated parts:<br>
 1. Program that could send and receive single messages using TCP/IP protocol;<br>
 2. Program that could send and receive data about written text in real-time;<br>

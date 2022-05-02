@@ -42,7 +42,7 @@ private slots:
 private:
     Ui::MainWindow *ui;
     ServerLogic sl;
-    ClientLogic cl;
+    //ClientLogic cl;
     QClipboard *Clipboard;
     int copyCount = 1;
 };

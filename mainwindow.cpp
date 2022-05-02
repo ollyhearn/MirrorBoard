@@ -31,12 +31,13 @@ MainWindow::MainWindow(QWidget *parent)
     ui->statusbar->showMessage("Not connected!");
     ui->copyButton->setEnabled(false);
     ServerLogic *sl = new ServerLogic();
-    ClientLogic *cl = new ClientLogic();
     sl->sconnect();
+
+
 
 }
 
-//На проект затрачено: 6.5 ч.
+//На проект затрачено: 9.5 ч.
 
 MainWindow::~MainWindow()
 {
@@ -115,7 +116,7 @@ void MainWindow::on_actionAbout_triggered()
     QMessageBox about;
     about.setTextFormat(Qt::RichText);
     about.setWindowTitle("About ToN");
-    about.setText("Simple app to send and receive text over TCP/IP connection!<br><br>by ákd.<br><a href='https://github.com/ollyhearn/'>My GitHub!</a><br><br>v0.0.6");
+    about.setText("Simple app to send and receive text over TCP/IP connection!<br><br>by ákd.<br><a href='https://github.com/ollyhearn/'>My GitHub!</a><br><br>v0.0.7");
     about.exec();
 }
 
@@ -133,7 +134,16 @@ void MainWindow::on_actionSet_port_triggered()
 
 void MainWindow::on_connectButton_clicked()
 {
-
+    ClientLogic *tempcli = new ClientLogic();
+    if(tempcli->clientConnect(ui->ipText->toPlainText())){
+        ui->statusbar->setStyleSheet("color: #298244");
+        ui->statusbar->showMessage("Connected!");
+    }
+    else{
+        ui->statusbar->setStyleSheet("color: #9e2601");
+        ui->statusbar->showMessage("Wrong IP:Port!", 2000);
+    }
+    delete tempcli;
 }
 
 
@@ -145,7 +155,13 @@ void MainWindow::on_copyButton_clicked()
         copyCount++;
     }
     else{
-        ui->copyButton->setText("Copied x" + QString::number(copyCount) + "!");
+        if(copyCount < 10){
+            ui->copyButton->setText("Copied x" + QString::number(copyCount) + "!");
+        }
+        else{
+            ui->copyButton->setText(":(");
+            QMessageBox::information(this, "you shit", "stop doing this");
+        }
         copyCount++;
     }
 }
