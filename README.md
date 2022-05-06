@@ -1,6 +1,8 @@
 # kursa4
 **My course work for second course of university**<br>
-
+<br>
+![logo](https://raw.githubusercontent.com/ollyhearn/kursa4/main/icons/m512.png)
+<br>
 **What I'm gonna do?**<br>
 Basicly, my course work is dedicated to the network logic and other stuff like this. I've chosen QT6 as my main code platform, which will allow me to create graphical and network things. The result of this course work is a working program, that will allow you to use networking features.<br>
 
