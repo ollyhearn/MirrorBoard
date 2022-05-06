@@ -14,7 +14,9 @@ void ClientLogic::slotReadyRead()
     QDataStream in(csocket);
     in.setVersion(QDataStream::Qt_DefaultCompiledVersion);
     if(in.status() == QDataStream::Ok){
-
+        QString str;
+        in << str;
+        //show
     }
 }
 
@@ -24,6 +26,10 @@ void ClientLogic::SendToServer(QString str){
     out.setVersion(QDataStream::Qt_DefaultCompiledVersion);
     out << str;
     csocket->write(data);
+}
+
+void ClientLogic::SendMessage(QString input){
+    SendToServer(input);
 }
 
 bool ClientLogic::clientConnect(QString ip){

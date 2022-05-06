@@ -15,6 +15,7 @@ public:
     bool clientConnect(QString ip);
 
     void SendToServer(QString str);
+    void SendMessage(QString input);
 private:
     QTcpSocket *csocket;
     QByteArray data;

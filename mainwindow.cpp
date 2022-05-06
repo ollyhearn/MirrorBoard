@@ -31,8 +31,9 @@ MainWindow::MainWindow(QWidget *parent)
     ui->statusbar->showMessage("Not connected!");
     ui->copyButton->setEnabled(false);
     ServerLogic *sl = new ServerLogic();
-    sl->sconnect();
+    ClientLogic *cl = new ClientLogic();
 
+    sl->sconnect();
 
 
 }
@@ -41,6 +42,7 @@ MainWindow::MainWindow(QWidget *parent)
 
 MainWindow::~MainWindow()
 {
+
     delete ui;
 
 }
@@ -134,8 +136,7 @@ void MainWindow::on_actionSet_port_triggered()
 
 void MainWindow::on_connectButton_clicked()
 {
-    ClientLogic *tempcli = new ClientLogic();
-    if(tempcli->clientConnect(ui->ipText->toPlainText())){
+    if(cl.clientConnect(ui->ipText->toPlainText())){
         ui->statusbar->setStyleSheet("color: #298244");
         ui->statusbar->showMessage("Connected!");
     }
@@ -143,7 +144,7 @@ void MainWindow::on_connectButton_clicked()
         ui->statusbar->setStyleSheet("color: #9e2601");
         ui->statusbar->showMessage("Wrong IP:Port!", 2000);
     }
-    delete tempcli;
+//    delete tempcli;
 }
 
 
