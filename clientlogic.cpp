@@ -4,9 +4,9 @@
 
 ClientLogic::ClientLogic()
 {
-    csocket = new QTcpSocket(this);
-    connect(csocket, &QTcpSocket::readyRead, this, &ClientLogic::slotReadyRead);
-    connect(csocket, &QTcpSocket::disconnected, csocket, &QTcpSocket::deleteLater);
+    csocket = new QTcpSocket();
+    csocket->connect(csocket, &QTcpSocket::readyRead, this, &ClientLogic::slotReadyRead);
+    csocket->connect(csocket, &QTcpSocket::disconnected, csocket, &QTcpSocket::deleteLater);
 }
 
 void ClientLogic::slotReadyRead()
@@ -37,8 +37,10 @@ bool ClientLogic::clientConnect(QString ip){
         QStringList i = ip.split(":");
         qDebug() << "Got " << i[0] << ":" << i[1];
         try{
+            qDebug() << "Tried to connect";
             csocket->connectToHost(i[0], i[1].toLong());
             qDebug() << "Connected to host";
+            return true;
             if(csocket->waitForConnected(5000)){
                 return true;
             }

@@ -6,7 +6,7 @@
 #include <QString>
 #include <QDebug>
 
-class ClientLogic : public QTcpSocket
+class ClientLogic : public QObject
 {
     Q_OBJECT
 public:

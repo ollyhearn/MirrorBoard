@@ -1,13 +1,10 @@
 #include "serverlogic.h"
 
 
-ServerLogic::ServerLogic()
+ServerLogic::ServerLogic() : ssocket(new QTcpSocket()), rsocket(new QTcpSocket()), server(new QTcpServer()), port(57483)
 {
-    ssocket = new QTcpSocket(this);
-    server = new QTcpServer(this);
-    port = 57483;
-
-
+    connect(rsocket, &QTcpSocket::readyRead, this, &ServerLogic::slotReadyRead);
+    connect(rsocket, &QTcpSocket::disconnected, this, &ServerLogic::deleteLater);
 }
 
 void ServerLogic::startServer(){
@@ -33,6 +30,7 @@ QString ServerLogic::getIp(){
         //ssocket->
     }
     else return "Failed to connect!";
+
 }
 
 bool ServerLogic::SetPort(long p){
@@ -49,8 +47,7 @@ long ServerLogic::getPort(){
 
 void ServerLogic::incomingConnection(qintptr socketDescriptor){
     rsocket->setSocketDescriptor(socketDescriptor);
-    connect(rsocket, &QTcpSocket::readyRead, this, &ServerLogic::slotReadyRead);
-    connect(rsocket, &QTcpSocket::disconnected, this, &ServerLogic::deleteLater);
+
 
 
 }
@@ -63,17 +60,21 @@ void ServerLogic::slotReadyRead(){
     if(in.status() == QDataStream::Ok){
         QString got;
         in >> got;
-
+        emit receivedText(got);
     }
     else{
 
     }
 }
 
-void ServerLogic::sendToClient(QString got){
+void ServerLogic::sendToClient(const QString& got){
     data.clear();
     QDataStream out(&data, QIODevice::WriteOnly);
     out.setVersion(QDataStream::Qt_DefaultCompiledVersion);
     out << got;
     rsocket->write(data);
 }
+
+//void ServerLogic::receivedText(const QString& s){
+
+//}

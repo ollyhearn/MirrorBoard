@@ -13,14 +13,14 @@
 
 #include <QTcpSocket>
 #include <QTcpServer>
-//#include <QtNetwork/QHostAddress>
+
 #include <QString>
-//#include <QClipboard>
+
 
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
-    , ui(new Ui::MainWindow)
+    , ui(new Ui::MainWindow), sl(new ServerLogic()), cl(new ClientLogic())
 {
 
     ui->setupUi(this);
@@ -30,19 +30,19 @@ MainWindow::MainWindow(QWidget *parent)
     ui->statusbar->setStyleSheet("color: #9e2601");
     ui->statusbar->showMessage("Not connected!");
     ui->copyButton->setEnabled(false);
-    ServerLogic *sl = new ServerLogic();
-    ClientLogic *cl = new ClientLogic();
 
     sl->sconnect();
-
+    //connect(rsocket, &QTcpSocket::disconnected, this, &ServerLogic::deleteLater);
+    connect(sl, &ServerLogic::receivedText, this, &MainWindow::replaceText);
 
 }
 
-//На проект затрачено: 9.5 ч.
+//На проект затрачено: 12 ч.
 
 MainWindow::~MainWindow()
 {
-
+    delete sl;
+    delete cl;
     delete ui;
 
 }
@@ -90,10 +90,11 @@ void MainWindow::checkRadio(){
         ui->copyButton->setText("Copy");
         ui->copyButton->setEnabled(true);
         copyCount = 1;
-
-        ui->ipText->setText(sl.getIp() + ":" + QString::number(sl.getPort()));
+        qDebug() << "Server starting";
+        sl->startServer();
+        ui->ipText->setText(sl->getIp() + ":" + QString::number(sl->getPort()));
         ui->textEdit->setEnabled(false);
-        ui->textEdit->setPlaceholderText("You will receive message here!");
+        ui->textEdit->setPlaceholderText("You will receive message in notification!");
 
 
     }
@@ -106,11 +107,8 @@ void MainWindow::checkRadio(){
 
 void MainWindow::on_submitButton_clicked()
 {
-
+    cl->SendMessage(ui->textEdit->toPlainText());
 }
-
-
-
 
 
 void MainWindow::on_actionAbout_triggered()
@@ -118,15 +116,15 @@ void MainWindow::on_actionAbout_triggered()
     QMessageBox about;
     about.setTextFormat(Qt::RichText);
     about.setWindowTitle("About ToN");
-    about.setText("Simple app to send and receive text over TCP/IP connection!<br><br>by ákd.<br><a href='https://github.com/ollyhearn/'>My GitHub!</a><br><br>v0.0.7");
+    about.setText("Simple app to send and receive text over TCP/IP connection!<br><br>by ákd.<br><a href='https://github.com/ollyhearn/'>My GitHub!</a><br><br>v1.0.0");
     about.exec();
 }
 
 
 void MainWindow::on_actionSet_port_triggered()
 {
-    QString curport = QString::number(sl.getPort());
-    while(!sl.SetPort(QInputDialog::getText(this, "Set port", "You can pick any port you wish, uless it is a reserved port", QLineEdit::Normal, curport).toLong())){
+    QString curport = QString::number(sl->getPort());
+    while(!sl->SetPort(QInputDialog::getText(this, "Set port", "You can pick any port you wish, uless it is a reserved port", QLineEdit::Normal, curport).toLong())){
         QMessageBox::warning(this, "Scary warning!", "You set the wrong port, use ports only in [1:65535]");
     }
     checkRadio();
@@ -136,7 +134,7 @@ void MainWindow::on_actionSet_port_triggered()
 
 void MainWindow::on_connectButton_clicked()
 {
-    if(cl.clientConnect(ui->ipText->toPlainText())){
+    if(cl->clientConnect(ui->ipText->toPlainText())){
         ui->statusbar->setStyleSheet("color: #298244");
         ui->statusbar->showMessage("Connected!");
     }
@@ -144,7 +142,6 @@ void MainWindow::on_connectButton_clicked()
         ui->statusbar->setStyleSheet("color: #9e2601");
         ui->statusbar->showMessage("Wrong IP:Port!", 2000);
     }
-//    delete tempcli;
 }
 
 
@@ -153,7 +150,6 @@ void MainWindow::on_copyButton_clicked()
     Clipboard->setText(ui->ipText->toPlainText());
     if(copyCount == 1){
         ui->copyButton->setText("Copied!");
-        copyCount++;
     }
     else{
         if(copyCount < 10){
@@ -161,9 +157,13 @@ void MainWindow::on_copyButton_clicked()
         }
         else{
             ui->copyButton->setText(":(");
+            ui->copyButton->setDisabled(true);
             QMessageBox::information(this, "you shit", "stop doing this");
         }
-        copyCount++;
     }
+    ++copyCount;
 }
 
+void MainWindow::replaceText(const QString& s){
+    QMessageBox::warning(this, "Received", s);
+}

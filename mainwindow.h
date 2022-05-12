@@ -18,7 +18,7 @@ class MainWindow : public QMainWindow
 
 public:
     MainWindow(QWidget *parent = nullptr);
-    ~MainWindow();
+    virtual ~MainWindow();
 
 private slots:
     void on_clearButton_clicked();
@@ -38,11 +38,12 @@ private slots:
     void on_connectButton_clicked();
 
     void on_copyButton_clicked();
-
+public slots:
+    void replaceText(const QString& s);
 private:
     Ui::MainWindow *ui;
-    ServerLogic sl;
-    ClientLogic cl;
+    ServerLogic *sl;
+    ClientLogic *cl;
     QClipboard *Clipboard;
     int copyCount = 1;
 };

@@ -23,8 +23,10 @@ public:
     bool SetPort(long p);
     long getPort();
     void startServer();
-    void sendToClient(QString got);
+    void sendToClient(const QString& got);
+
 signals:
+    void receivedText(const QString& s);
 
 private:
     QTcpSocket *ssocket;
