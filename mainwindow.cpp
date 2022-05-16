@@ -77,7 +77,7 @@ void MainWindow::checkRadio(){
         ui->copyButton->setText("Copy");
         copyCount = 1;
         ui->textEdit->clear();
-        ui->textEdit->setEnabled(true);
+        //ui->textEdit->setEnabled(true);
         ui->textEdit->setPlaceholderText("Send text to server! Type something and click \"Submit!\"");
 
 
@@ -93,8 +93,8 @@ void MainWindow::checkRadio(){
         qDebug() << "Server starting";
         sl->startServer();
         ui->ipText->setText(sl->getIp() + ":" + QString::number(sl->getPort()));
-        ui->textEdit->setEnabled(false);
-        ui->textEdit->setPlaceholderText("You will receive message in notification!");
+        //ui->textEdit->setEnabled(false);
+        ui->textEdit->setPlaceholderText("You will receive message here!");
 
 
     }
@@ -165,5 +165,7 @@ void MainWindow::on_copyButton_clicked()
 }
 
 void MainWindow::replaceText(const QString& s){
-    QMessageBox::warning(this, "Received", s);
+    ui->statusbar->setStyleSheet("color: #303aad");
+    ui->statusbar->showMessage("Received new message!", 2000);
+    ui->textEdit->setText(s);
 }

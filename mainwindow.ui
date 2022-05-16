@@ -75,6 +75,9 @@
         <property name="acceptDrops">
          <bool>true</bool>
         </property>
+        <property name="verticalScrollBarPolicy">
+         <enum>Qt::ScrollBarAlwaysOff</enum>
+        </property>
         <property name="placeholderText">
          <string>Enter server IP:Port here..</string>
         </property>
@@ -162,7 +165,7 @@
      <x>0</x>
      <y>0</y>
      <width>403</width>
-     <height>22</height>
+     <height>21</height>
     </rect>
    </property>
    <widget class="QMenu" name="menuInfo">

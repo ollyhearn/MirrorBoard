@@ -33,7 +33,7 @@ void ClientLogic::SendMessage(QString input){
 }
 
 bool ClientLogic::clientConnect(QString ip){
-    if(ip != 0){
+    if(ip.length() != 0){
         QStringList i = ip.split(":");
         qDebug() << "Got " << i[0] << ":" << i[1];
         try{
