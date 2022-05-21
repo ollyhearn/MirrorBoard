@@ -38,6 +38,8 @@ private slots:
     void on_connectButton_clicked();
 
     void on_copyButton_clicked();
+    void on_textEdit_textChanged();
+
 public slots:
     void replaceText(const QString& s);
 private:
@@ -46,5 +48,6 @@ private:
     ClientLogic *cl;
     QClipboard *Clipboard;
     int copyCount = 1;
+    int strlength = 0;
 };
 #endif // MAINWINDOW_H

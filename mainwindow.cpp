@@ -24,7 +24,7 @@ MainWindow::MainWindow(QWidget *parent)
 {
 
     ui->setupUi(this);
-    setWindowTitle("Text Over Network!");
+    setWindowTitle("MirrorBoard");
     setWindowIcon(QIcon(":/res/icons/m512.png"));
     ui->ipText->setPlaceholderText("Enter server IP:Port here..");
     ui->statusbar->setStyleSheet("color: #9e2601");
@@ -50,6 +50,7 @@ MainWindow::~MainWindow()
 void MainWindow::on_clearButton_clicked()
 {
     ui->textEdit->clear();
+    cl->SendMessage("CLEAR");
 }
 
 
@@ -78,7 +79,7 @@ void MainWindow::checkRadio(){
         copyCount = 1;
         ui->textEdit->clear();
         //ui->textEdit->setEnabled(true);
-        ui->textEdit->setPlaceholderText("Send text to server! Type something and click \"Submit!\"");
+        //ui->textEdit->setPlaceholderText("Send text to server! Type something and click \"Submit!\"");
 
 
     }
@@ -94,7 +95,7 @@ void MainWindow::checkRadio(){
         sl->startServer();
         ui->ipText->setText(sl->getIp() + ":" + QString::number(sl->getPort()));
         //ui->textEdit->setEnabled(false);
-        ui->textEdit->setPlaceholderText("You will receive message here!");
+        //ui->textEdit->setPlaceholderText("You will receive message here!");
 
 
     }
@@ -110,13 +111,25 @@ void MainWindow::on_submitButton_clicked()
     cl->SendMessage(ui->textEdit->toPlainText());
 }
 
+void MainWindow::on_textEdit_textChanged()
+{
+    const QString& s = ui->textEdit->toPlainText();
+    if(s.length() != strlength + 1){
+        cl->SendMessage("BACKSPACE");
+    }
+    else{
+        cl->SendMessage(s[s.length()-1]);
+    }
+    strlength = s.length();
+}
+
 
 void MainWindow::on_actionAbout_triggered()
 {
     QMessageBox about;
     about.setTextFormat(Qt::RichText);
-    about.setWindowTitle("About ToN");
-    about.setText("Simple app to send and receive text over TCP/IP connection!<br><br>by ákd.<br><a href='https://github.com/ollyhearn/'>My GitHub!</a><br><br>v1.0.0");
+    about.setWindowTitle("About MirrorBoard");
+    about.setText("Simple app to mirror your text over TCP/IP connection!<br><br>by ákd.<br><a href='https://github.com/ollyhearn/'>My GitHub!</a><br><br>v2.0.0");
     about.exec();
 }
 
@@ -166,6 +179,21 @@ void MainWindow::on_copyButton_clicked()
 
 void MainWindow::replaceText(const QString& s){
     ui->statusbar->setStyleSheet("color: #303aad");
-    ui->statusbar->showMessage("Received new message!", 2000);
-    ui->textEdit->setText(s);
+    ui->statusbar->showMessage("Receiving...", 2000);
+    if (s == "BACKSPACE" || s == "CLEAR"){
+        QString ct = ui->textEdit->toPlainText();
+        if (s == "BACKSPACE"){
+            ct.chop(1);
+            ui->textEdit->setText(ct);
+        }
+        if (s == "CLEAR"){
+            ui->textEdit->setText("");
+        }
+    }
+    else{
+        ui->textEdit->setText(ui->textEdit->toPlainText()+s);
+    }
 }
+
+
+
