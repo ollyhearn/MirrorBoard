@@ -16,7 +16,7 @@ Theese parts may be done within separated branches or as realease versions.<br><
 
 **Status:**<br>
 Part 1: 99% completed - release 1.\*.\*<br>
-Part 2: 0% completed - release 2.\*.\*<br>
+Part 2: 50% completed - release 2.\*.\*<br>
 Part 3: 0% completed - release 3.\*.\*<br>
 
 **What about releases?**<br>
