@@ -62,9 +62,6 @@ void ServerLogic::slotReadyRead(){
         in >> got;
         emit receivedText(got);
     }
-    else{
-
-    }
 }
 
 void ServerLogic::sendToClient(const QString& got){

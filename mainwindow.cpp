@@ -114,12 +114,23 @@ void MainWindow::on_submitButton_clicked()
 void MainWindow::on_textEdit_textChanged()
 {
     const QString& s = ui->textEdit->toPlainText();
-    if(s.length() != strlength + 1){
-        cl->SendMessage("BACKSPACE");
+    if(ui->clientRadio->isChecked()){
+        if(s.length() != strlength + 1){
+            cl->SendMessage("BACKSPACE");
+        }
+        else{
+            cl->SendMessage(s[s.length()-1]);
+        }
     }
     else{
-        cl->SendMessage(s[s.length()-1]);
+        if(s.length() != strlength + 1){
+            sl->sendToClient("BACKSPACE");
+        }
+        else{
+            sl->sendToClient(s[s.length()-1]);
+        }
     }
+
     strlength = s.length();
 }
 
@@ -129,7 +140,7 @@ void MainWindow::on_actionAbout_triggered()
     QMessageBox about;
     about.setTextFormat(Qt::RichText);
     about.setWindowTitle("About MirrorBoard");
-    about.setText("Simple app to mirror your text over TCP/IP connection!<br><br>by ákd.<br><a href='https://github.com/ollyhearn/'>My GitHub!</a><br><br>v2.0.0");
+    about.setText("Simple app to mirror your text over TCP/IP connection!<br><br>by ákd.<br><a href='https://github.com/ollyhearn/'>My GitHub!</a><br><br>v2.0.1");
     about.exec();
 }
 
